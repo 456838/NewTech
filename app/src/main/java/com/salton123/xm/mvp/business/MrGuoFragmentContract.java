@@ -2,7 +2,6 @@ package com.salton123.xm.mvp.business;
 
 import com.salton123.mvp.presenter.BasePresenter;
 import com.salton123.mvp.view.BaseView;
-import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 
 /**
@@ -13,7 +12,7 @@ import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
  */
 public interface MrGuoFragmentContract {
     interface View extends BaseView {
-        void showData(SearchAlbumList searchAlbumList);
+//        void showData(SearchAlbumList searchAlbumList);
         void showSearchedTracksData(SearchTrackList searchTrackList);
 
         void onError(int resCode, String errorMsg);

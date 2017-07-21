@@ -17,7 +17,6 @@ import com.salton123.xm.mvp.business.MrGuoFragmentPresenter;
 import com.salton123.xm.mvp.view.adapter.MrGuoTrackAdapter;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
-import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
@@ -61,6 +60,7 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<MrGuoFragmentPre
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                page=1;
                 mPresenter.getSearchedTracks(keyword, categoryId, "", page++, pageSize);
             }
         });
@@ -102,27 +102,13 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<MrGuoFragmentPre
         });
     }
 
-    @Override
-    public void showData(SearchAlbumList searchAlbumList) {
-
-//        if (searchAlbumList.getAlbums().size() < pageSize) toast("数据加载完毕");
-//        if (refresh.isRefreshing()) {
-//            refresh.setRefreshing(false);
-//            page = 1;
-//            mAdapter.clear();
-//            mAdapter.setData(searchAlbumList.getAlbums());
-//        } else {
-//            mAdapter.addMoreData(searchAlbumList.getAlbums());
-//        }
-    }
-
 
     @Override
     public void showSearchedTracksData(SearchTrackList searchTrackList) {
         if (searchTrackList.getTracks().size() < pageSize) toast("数据加载完毕");
         if (refresh.isRefreshing()) {
             refresh.setRefreshing(false);
-            page = 1;
+//            page = 1;
             mAdapter.clear();
             mAdapter.setData(searchTrackList.getTracks());
         } else {
