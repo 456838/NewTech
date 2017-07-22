@@ -42,6 +42,7 @@ public class MrGuoFragmentPresenter extends RxPresenter<MrGuoFragmentContract.Vi
         Map<String, String> param = new HashMap<String, String>();
         param.put(DTransferConstants.SEARCH_KEY, keyword);
         param.put(DTransferConstants.CATEGORY_ID, "" + categoryId);
+        param.put(DTransferConstants.CALC_DIMENSION, "" + calc_dimension);
         param.put(DTransferConstants.PAGE, "" + page);
         param.put(DTransferConstants.PAGE_SIZE, "" + pageSize);
         CommonRequest.getSearchedTracks(param, new IDataCallBack<SearchTrackList>() {
@@ -56,4 +57,21 @@ public class MrGuoFragmentPresenter extends RxPresenter<MrGuoFragmentContract.Vi
             }
         });
     }
+
+//    public void getCategories() {
+//        Map<String, String> map = new HashMap<String, String>();
+//        CommonRequest.getCategories(map, new IDataCallBack<CategoryList>() {
+//            @Override
+//            public void onSuccess(CategoryList list) {
+//                FileUtils.writeFile("/sdcard/category.txt",new GsonBuilder().setPrettyPrinting().create().toJson(list));
+//                LogUtils.e(new GsonBuilder().setPrettyPrinting().create().toJson(list));
+//            }
+//
+//            @Override
+//            public void onError(int code, String message) {
+//            }
+//        });
+//    }
+
+
 }

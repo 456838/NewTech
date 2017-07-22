@@ -9,8 +9,10 @@ import android.widget.TextView;
 import com.salton123.base.ApplicationBase;
 import com.salton123.base.BaseSupportActivity;
 import com.salton123.base.BaseSupportFragment;
+import com.salton123.event.StartBrotherEvent;
+import com.salton123.util.EventUtil;
 import com.salton123.util.log.MLog;
-import com.salton123.xm.mvp.fm.MrGuoFragment;
+import com.salton123.xm.mvp.fm.AlbumListFragment;
 import com.salton123.xm.wrapper.XmAdsStatusAdapter;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.tbruyelle.rxpermissions.Permission;
@@ -21,6 +23,8 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.helper.FragmentLifecycleCallbacks;
@@ -44,8 +48,9 @@ public class MainActivity extends BaseSupportActivity {
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
+        EventUtil.register(this);
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(MrGuoFragment.class));
+            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(AlbumListFragment.class));
         }
         mXimalaya = CommonRequest.getInstanse();
         mXimalaya.init(this ,XmConfig.APP_SECRET);
@@ -136,5 +141,17 @@ public class MainActivity extends BaseSupportActivity {
         }
     };
 
+    /**
+     * start other BrotherFragment
+     */
+    @Subscribe
+    public void startBrother(StartBrotherEvent event) {
+        start(event.targetFragment);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventUtil.unregister(this);
+    }
 }

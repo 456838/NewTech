@@ -36,5 +36,10 @@ public interface MrGuoFragmentContract {
          * @param pageSize       每页多少条，默认20，最多不超过200
          */
         void getSearchedTracks(String keyword, int categoryId, String calc_dimension, int page, int pageSize);
+
+//        /**
+//         *  获取喜马拉雅内容分类
+//         */
+//        void getCategories();
     }
 }

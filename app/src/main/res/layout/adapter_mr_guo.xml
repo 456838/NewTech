@@ -80,6 +80,7 @@
             tools:text="三分钟前"
             android:textColor="@color/dark_gray"
             android:textSize="10sp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/subhead" />
 
     </android.support.constraint.ConstraintLayout>

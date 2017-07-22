@@ -3,10 +3,12 @@ package com.salton123.xm.mvp.view.adapter;
 import android.support.v7.widget.RecyclerView;
 
 import com.facebook.drawee.view.DraweeView;
+import com.google.gson.GsonBuilder;
 import com.salton123.common.image.FrescoImageLoader;
 import com.salton123.util.DateUtils;
+import com.salton123.util.LogUtils;
 import com.salton123.xm.R;
-import com.ximalaya.ting.android.opensdk.model.track.Track;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
@@ -17,21 +19,21 @@ import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
  * Time: 10:49
  * Description:
  */
-public class MrGuoTrackAdapter extends BGARecyclerViewAdapter<Track> {
-    public MrGuoTrackAdapter(RecyclerView recyclerView) {
+public class AlbumAdapter extends BGARecyclerViewAdapter<Album> {
+    public AlbumAdapter(RecyclerView recyclerView) {
         super(recyclerView, R.layout.adapter_mr_guo);
     }
 
     @Override
-    protected void fillData(BGAViewHolderHelper helper, int position, Track model) {
+    protected void fillData(BGAViewHolderHelper helper, int position, Album model) {
         helper
                 .setText(R.id.author, model.getAnnouncer().getNickname() + "")
-                .setText(R.id.track_title, model.getTrackTitle() + "")
+                .setText(R.id.track_title, model.getAlbumTitle() + "")
                 .setText(R.id.track_tags, "-" + DateUtils.getDateTime(model.getUpdatedAt()) + "-")
-                .setText(R.id.subhead, model.getTrackTags() + "")
-//                .setText(R.id.post_time, model.getTrackIntro())
- ;
+                .setText(R.id.subhead, "新作：" + model.getLastUptrack().getTrackTitle())
+//                .setText(R.id.post_time, model.getAlbumIntro() + "")
+        ;
         FrescoImageLoader.display((DraweeView) helper.getView(R.id.sdv_thumbnail), model.getCoverUrlLarge());
-//        LogUtils.e("aa" + new GsonBuilder().setPrettyPrinting().create().toJson(model));
+        LogUtils.e("aa" + new GsonBuilder().setPrettyPrinting().create().toJson(model));
     }
 }
