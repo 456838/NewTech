@@ -13,7 +13,7 @@ import com.salton123.xm.R;
 import com.salton123.xm.mvp.EndLessOnScrollListener;
 import com.salton123.xm.mvp.business.TracksFmContract;
 import com.salton123.xm.mvp.business.TracksFmPresenter;
-import com.salton123.xm.mvp.view.adapter.MrGuoTrackAdapter;
+import com.salton123.xm.mvp.view.adapter.TracksAdapter;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -21,6 +21,7 @@ import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
+
 
 /**
  * User: 巫金生(newSalton@outlook.com)
@@ -31,7 +32,7 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresenter> implements TracksFmContract.View {
     private SwipeRefreshLayout refresh;
     private RecyclerView recycler;
-    private MrGuoTrackAdapter mAdapter;
+    private TracksAdapter mAdapter;
     private long album_id = 0;
     private int page = 1;
     private int pageSize = 20;
@@ -58,7 +59,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     public void InitViewAndData() {
         refresh = f(R.id.refresh);
         recycler = f(R.id.recycler);
-        mAdapter = new MrGuoTrackAdapter(recycler);
+        mAdapter = new TracksAdapter(recycler);
         refresh.setProgressViewOffset(false, 100, 200);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
