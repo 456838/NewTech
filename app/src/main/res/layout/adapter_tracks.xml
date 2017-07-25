@@ -35,7 +35,8 @@
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/bg_musicstore_download" />
+        android:src="@drawable/bg_musicstore_download"
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="30dp"

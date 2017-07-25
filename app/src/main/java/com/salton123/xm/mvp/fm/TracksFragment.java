@@ -7,14 +7,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.salton123.common.image.FrescoImageLoader;
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.business.TracksFmContract;
 import com.salton123.xm.mvp.business.TracksFmPresenter;
+import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.view.adapter.TracksAdapter;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
+import com.ximalaya.ting.android.opensdk.auth.utils.StringUtil;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
@@ -45,11 +50,12 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     }
 
     Album mAlbum;
+    RelativeLayout ll_track_intro ;
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
         mAlbum = getArguments().getParcelable(ARG_ITEM);
-        album_id=mAlbum.getId();
+        album_id = mAlbum.getId();
         mPresenter = new TracksFmPresenter();
         mPlayerManager = XmPlayerManager.getInstance(_mActivity);
         mPlayerManager.addPlayerStatusListener(listener);
@@ -65,7 +71,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
             @Override
             public void onRefresh() {
                 page = 1;
-                mPresenter.getTracks(album_id,sort,page++, pageSize);
+                mPresenter.getTracks(album_id, sort, page++, pageSize);
             }
         });
         LinearLayoutManager layout = new LinearLayoutManager(_mActivity);
@@ -73,17 +79,19 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
         recycler.addOnScrollListener(new EndLessOnScrollListener(layout, 1) {
             @Override
             public void onLoadMore() {
-                mPresenter.getTracks(album_id,sort,page++, pageSize);
+                mPresenter.getTracks(album_id, sort, page++, pageSize);
             }
         });
-        recycler.setAdapter(mAdapter);
-
+        ll_track_intro = (RelativeLayout) inflater().inflate(R.layout.music_detial_top_item,null);
+        mAdapter.addHeaderView(ll_track_intro);
+        recycler.setAdapter(mAdapter.getHeaderAndFooterAdapter());
     }
+
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        mPresenter.getTracks(album_id,sort,page++, pageSize);
+        mPresenter.getTracks(album_id, sort, page++, pageSize);
     }
 
     @Override
@@ -108,7 +116,26 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
         } else {
             mAdapter.addMoreData(list.getTracks());
         }
+        initHeaderData(list);
     }
+
+
+    private void initHeaderData(TrackList list){
+        SimpleDraweeView sdv_thumbnail = (SimpleDraweeView) ll_track_intro.findViewById(R.id.sdv_thumbnail);
+        TextView tv_title = (TextView) ll_track_intro.findViewById(R.id.title);
+        TextView tv_expandable = (TextView) ll_track_intro.findViewById(R.id.expandable_text);
+        FrescoImageLoader.display(sdv_thumbnail,list.getCoverUrlLarge());
+        if (StringUtil.isBlank(list.getAlbumTitle())){
+            tv_title.setVisibility(View.GONE);
+        }
+        if (StringUtil.isBlank(list.getAlbumIntro())){
+            tv_expandable.setVisibility(View.GONE);
+        }
+        tv_title.setText(list.getAlbumTitle());
+        String intro = list.getAlbumIntro();
+        tv_expandable.setText(intro==null?"":intro);
+    }
+
 
     @Override
     public void onError(int resCode, String errorMsg) {

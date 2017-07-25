@@ -13,10 +13,11 @@ import com.salton123.event.StartBrotherEvent;
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
 import com.salton123.util.EventUtil;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.business.AlbumListFmContract;
 import com.salton123.xm.mvp.business.AlbumListFmPresenter;
+import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.view.adapter.AlbumAdapter;
+import com.salton123.xm.view.widget.StatusTitleBar;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
@@ -40,7 +41,7 @@ public class AlbumListFragment extends BaseSupportPresenterFragment<AlbumListFmP
     private int pageSize = 20;
     private int calcDimension = 1;
     private String tagName = "郭德纲";
-//    private XmPlayerManager mPlayerManager;
+    StatusTitleBar mHeaderView;
 
     @Override
     public int GetLayout() {
@@ -50,12 +51,9 @@ public class AlbumListFragment extends BaseSupportPresenterFragment<AlbumListFmP
     @Override
     public void InitVariable(Bundle savedInstanceState) {
         mPresenter = new AlbumListFmPresenter();
-        int ranNum =new Random().nextInt(10);
-        calcDimension =ranNum%3;
-        System.out.println("ranNum:"+ranNum+",calcDimension:"+calcDimension);
-//        mPlayerManager = XmPlayerManager.getInstance(_mActivity);
-//        mPlayerManager.addPlayerStatusListener(listener);
-//        mPresenter.getCategories();
+        int ranNum = new Random().nextInt(10);
+        calcDimension = ranNum % 3 + 1;
+        System.out.println("ranNum:" + ranNum + ",calcDimension:" + calcDimension);
     }
 
     @Override
@@ -68,7 +66,7 @@ public class AlbumListFragment extends BaseSupportPresenterFragment<AlbumListFmP
             @Override
             public void onRefresh() {
                 page = 1;
-                mPresenter.getAlbumList(tagName, categoryId, calcDimension+"", page++, pageSize);
+                mPresenter.getAlbumList(tagName, categoryId, calcDimension + "", page++, pageSize);
             }
         });
         LinearLayoutManager layout = new LinearLayoutManager(_mActivity);
@@ -76,17 +74,25 @@ public class AlbumListFragment extends BaseSupportPresenterFragment<AlbumListFmP
         recycler.addOnScrollListener(new EndLessOnScrollListener(layout, 1) {
             @Override
             public void onLoadMore() {
-                mPresenter.getAlbumList(tagName, categoryId, calcDimension+"", page++, pageSize);
+                mPresenter.getAlbumList(tagName, categoryId, calcDimension + "", page++, pageSize);
             }
         });
-        recycler.setAdapter(mAdapter);
+        mHeaderView = (StatusTitleBar) inflater().inflate(R.layout.simple_title_layout, null);
+        mHeaderView.setTitleText("推荐", View.VISIBLE).setTitleListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                toast("hello");
+            }
+        });
+        mAdapter.addHeaderView(mHeaderView);
+        recycler.setAdapter(mAdapter.getHeaderAndFooterAdapter());
 
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        mPresenter.getAlbumList(tagName, categoryId,calcDimension+"", page++, pageSize);
+        mPresenter.getAlbumList(tagName, categoryId, calcDimension + "", page++, pageSize);
     }
 
     @Override
