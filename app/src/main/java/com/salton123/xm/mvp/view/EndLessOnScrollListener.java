@@ -1,4 +1,4 @@
-package com.salton123.xm.mvp;
+package com.salton123.xm.mvp.view;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

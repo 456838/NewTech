@@ -13,7 +13,7 @@ import com.salton123.event.StartBrotherEvent;
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
 import com.salton123.util.EventUtil;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.EndLessOnScrollListener;
+import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.business.AlbumListFmContract;
 import com.salton123.xm.mvp.business.AlbumListFmPresenter;
 import com.salton123.xm.mvp.view.adapter.AlbumAdapter;

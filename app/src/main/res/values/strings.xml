@@ -29,8 +29,5 @@
     <string name="tip_refresh_access_token_failure">access token 无效，刷新 token 失败</string>
     <string name="tip_has_not_login">未登录状态，请先认证授权登录</string>
 
-    <color name="selected_bg">#e5dcda</color>
-    <color name="textcolor">#333</color>
-    <color name="red">#ff0000</color>
 
 </resources>

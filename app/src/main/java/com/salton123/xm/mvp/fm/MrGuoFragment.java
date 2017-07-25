@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.EndLessOnScrollListener;
+import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.business.MrGuoFragmentContract;
 import com.salton123.xm.mvp.business.MrGuoFragmentPresenter;
 import com.salton123.xm.mvp.view.adapter.MrGuoTrackAdapter;

@@ -1,4 +1,4 @@
-package com.salton123.xm;
+package com.salton123.xm.test;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.salton123.base.BaseSupportFragment;
 import com.salton123.util.ScreenUtils;
+import com.salton123.xm.R;
 
 import static com.salton123.util.ScreenUtils.pxToDp;
 

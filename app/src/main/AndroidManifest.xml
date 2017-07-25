@@ -63,7 +63,6 @@
         <activity android:name=".download.DownloadTrackActivity"></activity>
         <activity android:name=".download.DownloadActivity"></activity>
         <activity android:name=".download.BatchDownloadActivity"></activity>
-        <activity android:name=".XMAuthDemoActivity" />
         <activity
             android:name=".pay.PayActivity"
             android:configChanges="keyboardHidden|orientation"

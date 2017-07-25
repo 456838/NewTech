@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Notification;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.salton123.base.ApplicationBase;
 import com.salton123.base.BaseSupportActivity;
@@ -38,9 +37,9 @@ import rx.Subscriber;
  */
 public class MainActivity extends BaseSupportActivity {
 
-    private TextView tv_hint;
     private CommonRequest mXimalaya;
     private XmPlayerManager mPlayerManager;
+
     @Override
     public int GetLayout() {
         return R.layout.fm_container;
@@ -53,9 +52,9 @@ public class MainActivity extends BaseSupportActivity {
             loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(AlbumListFragment.class));
         }
         mXimalaya = CommonRequest.getInstanse();
-        mXimalaya.init(this ,XmConfig.APP_SECRET);
+        mXimalaya.init(this, XmConfig.APP_SECRET);
         mPlayerManager = XmPlayerManager.getInstance(this);
-        Notification mNotification = XmNotificationCreater.getInstanse(this).initNotification(this.getApplicationContext(), MainFragmentActivity.class);
+        Notification mNotification = XmNotificationCreater.getInstanse(this).initNotification(this.getApplicationContext(), MainActivity.class);
         // 如果之前贵方使用了 `XmPlayerManager.init(int id, Notification notification)` 这个初始化的方式
         // 请参考`4.8 播放器通知栏使用`重新添加新的通知栏布局,否则直接升级可能导致在部分手机播放时崩溃
         // 如果不想使用sdk内部搞好的notification,或者想自建notification 可以使用下面的  init()函数进行初始化
@@ -68,7 +67,7 @@ public class MainActivity extends BaseSupportActivity {
             public void onConnected() {
                 mXimalaya.setDefaultPagesize(50);
                 mPlayerManager.setPlayMode(XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP);
-                MLog.info("newsalton","sdk connected");
+                MLog.info("newsalton", "sdk connected");
             }
         });
 
@@ -94,7 +93,6 @@ public class MainActivity extends BaseSupportActivity {
     public void InitViewAndData() {
 
     }
-
 
 
     @Override
@@ -134,7 +132,7 @@ public class MainActivity extends BaseSupportActivity {
         }
     };
 
-    XmAdsStatusAdapter  adsStatusAdapter = new XmAdsStatusAdapter(){
+    XmAdsStatusAdapter adsStatusAdapter = new XmAdsStatusAdapter() {
         @Override
         public void onStartGetAdsInfo() {
 
