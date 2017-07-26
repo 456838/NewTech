@@ -1,5 +1,6 @@
 package com.salton123.xm.mvp.fm;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +26,11 @@ import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
+import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDoSomethingProgress;
+import com.ximalaya.ting.android.sdkdownloader.exception.AddDownloadException;
 
+import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 
 
@@ -50,7 +56,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     }
 
     Album mAlbum;
-    RelativeLayout ll_track_intro ;
+    RelativeLayout ll_track_intro;
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
@@ -82,7 +88,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
                 mPresenter.getTracks(album_id, sort, page++, pageSize);
             }
         });
-        ll_track_intro = (RelativeLayout) inflater().inflate(R.layout.music_detial_top_item,null);
+        ll_track_intro = (RelativeLayout) inflater().inflate(R.layout.music_detial_top_item, null);
         mAdapter.addHeaderView(ll_track_intro);
         recycler.setAdapter(mAdapter.getHeaderAndFooterAdapter());
     }
@@ -99,9 +105,46 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
         mAdapter.setOnRVItemClickListener(new BGAOnRVItemClickListener() {
             @Override
             public void onRVItemClick(ViewGroup parent, View itemView, int position) {
+                loadRotateAnimation(itemView.findViewById(R.id.iv_play_music));
                 mPlayerManager.playList(mAdapter.getData(), position);
             }
         });
+        mAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(ViewGroup parent, View childView, int position) {
+                switch (childView.getId()) {
+                    case R.id.iv_download:
+                        //ui
+                        childView.setEnabled(false);
+                        XmDownloadManager.getInstance().downloadSingleTrack(mAdapter.getItem(position).getDataId(), new IDoSomethingProgress<AddDownloadException>() {
+                            @Override
+                            public void begin() {
+
+                            }
+
+                            @Override
+                            public void success() {
+
+                            }
+
+                            @Override
+                            public void fail(AddDownloadException e) {
+
+                            }
+                        });
+                        break;
+                }
+            }
+        });
+    }
+
+    private void loadRotateAnimation(View view){
+        view.setVisibility(View.VISIBLE);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view,"rotation",0,360);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setRepeatCount(-1);
+        animator.setDuration(2000);
+        animator.start();
     }
 
 
@@ -120,20 +163,20 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     }
 
 
-    private void initHeaderData(TrackList list){
+    private void initHeaderData(TrackList list) {
         SimpleDraweeView sdv_thumbnail = (SimpleDraweeView) ll_track_intro.findViewById(R.id.sdv_thumbnail);
         TextView tv_title = (TextView) ll_track_intro.findViewById(R.id.title);
         TextView tv_expandable = (TextView) ll_track_intro.findViewById(R.id.expandable_text);
-        FrescoImageLoader.display(sdv_thumbnail,list.getCoverUrlLarge());
-        if (StringUtil.isBlank(list.getAlbumTitle())){
+        FrescoImageLoader.display(sdv_thumbnail, list.getCoverUrlLarge());
+        if (StringUtil.isBlank(list.getAlbumTitle())) {
             tv_title.setVisibility(View.GONE);
         }
-        if (StringUtil.isBlank(list.getAlbumIntro())){
+        if (StringUtil.isBlank(list.getAlbumIntro())) {
             tv_expandable.setVisibility(View.GONE);
         }
         tv_title.setText(list.getAlbumTitle());
         String intro = list.getAlbumIntro();
-        tv_expandable.setText(intro==null?"":intro);
+        tv_expandable.setText(intro == null ? "" : intro);
     }
 
 

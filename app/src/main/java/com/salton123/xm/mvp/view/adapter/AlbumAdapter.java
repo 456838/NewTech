@@ -1,6 +1,7 @@
 package com.salton123.xm.mvp.view.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.facebook.drawee.view.DraweeView;
 import com.google.gson.GsonBuilder;
@@ -26,13 +27,15 @@ public class AlbumAdapter extends BGARecyclerViewAdapter<Album> {
 
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, Album model) {
+
         helper
                 .setText(R.id.author, model.getAnnouncer().getNickname() + "")
                 .setText(R.id.track_title, model.getAlbumTitle() + "")
                 .setText(R.id.track_tags, "-" + DateUtils.getDateTime(model.getUpdatedAt()) + "-")
-                .setText(R.id.subhead, "新作：" + model.getLastUptrack().getTrackTitle())
+                .setText(R.id.subhead, "新作：" + model.getLastUptrack() == null ? "" : model.getLastUptrack().getTrackTitle())
 //                .setText(R.id.post_time, model.getAlbumIntro() + "")
         ;
+        if (model.getLastUptrack() == null) helper.getView(R.id.subhead).setVisibility(View.GONE);
         FrescoImageLoader.display((DraweeView) helper.getView(R.id.sdv_thumbnail), model.getCoverUrlLarge());
         LogUtils.e("aa" + new GsonBuilder().setPrettyPrinting().create().toJson(model));
     }
