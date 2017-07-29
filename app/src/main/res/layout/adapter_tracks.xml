@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/ic_file_download_black_24dp" />
+        android:src="@drawable/ic_launcher" />
 
     <ImageView
         android:id="@+id/iv_play_music"
