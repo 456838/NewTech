@@ -3,7 +3,9 @@ package com.salton123.xm;
 import android.Manifest;
 import android.app.Notification;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
+import android.view.View;
 
 import com.salton123.base.ApplicationBase;
 import com.salton123.base.BaseSupportActivity;
@@ -12,15 +14,18 @@ import com.salton123.event.StartBrotherEvent;
 import com.salton123.util.EventUtil;
 import com.salton123.util.log.MLog;
 import com.salton123.xm.mvp.fm.AlbumListFragment;
+import com.salton123.xm.view.widget.floatingmusicmenu.FloatingMusicMenu;
 import com.salton123.xm.wrapper.XmAdsStatusAdapter;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.tbruyelle.rxpermissions.Permission;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -40,9 +45,13 @@ public class MainActivity extends BaseSupportActivity {
     private CommonRequest mXimalaya;
     private XmPlayerManager mPlayerManager;
 
+    //FloatingMusicButton
+    private FloatingMusicMenu musicMenu;
+    private FloatingActionButton playingBtn, modeBtn, detailBtn, nextBtn;
+
     @Override
     public int GetLayout() {
-        return R.layout.fm_container;
+        return R.layout.aty_main;
     }
 
     @Override
@@ -91,6 +100,36 @@ public class MainActivity extends BaseSupportActivity {
 
     @Override
     public void InitViewAndData() {
+        musicMenu = f(R.id.floatingMusicMenu);
+        playingBtn = f(R.id.fab_play);
+        modeBtn =f(R.id.fab_mode);
+        nextBtn =f(R.id.fab_next);
+        detailBtn =f(R.id.fab_player);
+        playingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toast("playingBtn");
+            }
+        });
+        modeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toast("playingBtn");
+            }
+        });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toast("playingBtn");
+            }
+        });
+        detailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toast("playingBtn");
+            }
+        });
 
     }
 
@@ -126,8 +165,36 @@ public class MainActivity extends BaseSupportActivity {
 
     XmPlayerStatusAdapter playerStatusAdapter = new XmPlayerStatusAdapter() {
         @Override
-        public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
-            super.onSoundSwitch(playableModel, playableModel1);
+        public void onPlayStart() {
+            musicMenu.rotateStart();
+        }
+
+        @Override
+        public void onPlayPause() {
+            musicMenu.rotateStop();
+        }
+
+        @Override
+        public void onPlayStop() {
+            musicMenu.rotateStop();
+        }
+
+
+        @Override
+        public void onPlayProgress(int currPos, int duration) {
+
+            float progress = (float) currPos * 100 / (float) duration;
+            musicMenu.setProgress(progress);
+            System.out.println("currPos:" + currPos + ",duration:" + duration + ",progress=" + progress);
+        }
+
+        @Override
+        public boolean onError(XmPlayerException e) {
+            return false;
+        }
+
+        @Override
+        public void onSoundSwitch(PlayableModel lastModel, PlayableModel curMode) {
 
         }
     };
@@ -138,6 +205,12 @@ public class MainActivity extends BaseSupportActivity {
 
         }
     };
+
+    @Subscribe
+    public void updateCover(Track track) {
+        track.getCoverUrlSmall();
+//        musicMenu.setMusicCover(getResources().getDrawable(R.drawable.moefou));
+    }
 
     /**
      * start other BrotherFragment

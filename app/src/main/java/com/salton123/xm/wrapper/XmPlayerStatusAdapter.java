@@ -37,7 +37,7 @@ public  class XmPlayerStatusAdapter implements IXmPlayerStatusListener {
     }
 
     @Override
-    public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+    public void onSoundSwitch(PlayableModel lastModel, PlayableModel curMode) {
 
     }
 
@@ -57,7 +57,7 @@ public  class XmPlayerStatusAdapter implements IXmPlayerStatusListener {
     }
 
     @Override
-    public void onPlayProgress(int i, int i1) {
+    public void onPlayProgress(int currPos, int duration) {
 
     }
 

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.salton123.common.image.FrescoImageLoader;
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
+import com.salton123.util.EventUtil;
 import com.salton123.xm.R;
 import com.salton123.xm.mvp.business.TracksFmContract;
 import com.salton123.xm.mvp.business.TracksFmPresenter;
@@ -107,6 +108,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
             public void onRVItemClick(ViewGroup parent, View itemView, int position) {
                 loadRotateAnimation(itemView.findViewById(R.id.iv_play_music));
                 mPlayerManager.playList(mAdapter.getData(), position);
+                EventUtil.sendEvent(mAdapter.getData());
             }
         });
         mAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
