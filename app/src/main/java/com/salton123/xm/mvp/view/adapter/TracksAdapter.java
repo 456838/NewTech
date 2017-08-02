@@ -1,6 +1,9 @@
 package com.salton123.xm.mvp.view.adapter;
 
+import android.animation.ObjectAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import com.salton123.util.SizeUtils;
 import com.salton123.xm.R;
@@ -36,11 +39,25 @@ public class TracksAdapter extends BGARecyclerViewAdapter<Track> {
                 .setText(R.id.track_tags, SizeUtils.FormetFileSize(model.getDownloadSize()))
 //                .setText(R.id.subhead, model.getTrackTags() + "")
 //                .setText(R.id.post_time, model.getTrackIntro())
- ;
-
+        ;
+        loadRotateAnimation(helper.getView(R.id.iv_play_music), false);
 //        FrescoImageLoader.display((DraweeView) helper.getView(R.id.sdv_thumbnail), model.getCoverUrlLarge());
 //        LogUtils.e("aa" + new GsonBuilder().setPrettyPrinting().create().toJson(model));
     }
 
+
+    public void loadRotateAnimation(View view, boolean show) {
+        if (show) {
+            view.setVisibility(View.VISIBLE);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0, 360);
+            animator.setInterpolator(new LinearInterpolator());
+            animator.setRepeatCount(-1);
+            animator.setDuration(2000);
+            animator.start();
+        } else {
+            view.clearAnimation();
+            view.setVisibility(View.INVISIBLE);
+        }
+    }
 
 }

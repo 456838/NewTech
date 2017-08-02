@@ -1,14 +1,14 @@
 package com.salton123.xm.mvp.fm;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,15 +21,17 @@ import com.salton123.xm.mvp.business.TracksFmContract;
 import com.salton123.xm.mvp.business.TracksFmPresenter;
 import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.view.adapter.TracksAdapter;
-import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.ximalaya.ting.android.opensdk.auth.utils.StringUtil;
-import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDoSomethingProgress;
 import com.ximalaya.ting.android.sdkdownloader.exception.AddDownloadException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
@@ -49,11 +51,11 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     private int page = 1;
     private int pageSize = 20;
     private String sort = "asc";
-    private XmPlayerManager mPlayerManager;
+//    private XmPlayerManager mPlayerManager;
 
     @Override
     public int GetLayout() {
-        return R.layout.fm_mr_guo;
+        return R.layout.fm_tracks;
     }
 
     Album mAlbum;
@@ -61,11 +63,30 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
-        mAlbum = getArguments().getParcelable(ARG_ITEM);
-        album_id = mAlbum.getId();
+        Parcelable parcelable = getArguments().getParcelable(ARG_ITEM);
+        if (parcelable instanceof  Album){
+            mAlbum = getArguments().getParcelable(ARG_ITEM);
+            if(mAlbum!=null){
+                album_id = mAlbum.getId();
+            }
+        }
         mPresenter = new TracksFmPresenter();
-        mPlayerManager = XmPlayerManager.getInstance(_mActivity);
-        mPlayerManager.addPlayerStatusListener(listener);
+//        mPlayerManager = XmPlayerManager.getInstance(_mActivity);
+//        mPlayerManager.addPlayerStatusListener(listener);
+    }
+
+
+    public static <T extends Fragment> T newInstance(Class<T> clz, @Nullable ArrayList<? extends Parcelable> value) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(ARG_ITEM,value);
+        T fragment = null;
+        try {
+            fragment = clz.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -106,9 +127,14 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
         mAdapter.setOnRVItemClickListener(new BGAOnRVItemClickListener() {
             @Override
             public void onRVItemClick(ViewGroup parent, View itemView, int position) {
-                loadRotateAnimation(itemView.findViewById(R.id.iv_play_music));
-                mPlayerManager.playList(mAdapter.getData(), position);
-                EventUtil.sendEvent(mAdapter.getData());
+//                updateItemStatus(itemView.findViewById(R.id.iv_play_music),position);
+//                loadRotateAnimation(itemView.findViewById(R.id.iv_play_music));
+                List<Track> trackList = mAdapter.getData();
+                XmPlayerManager.getInstance(_mActivity).playList(trackList, position);
+
+//                XmPlayerManager.getInstance(_mActivity).play(position);
+                EventUtil.sendEvent(trackList.get(position));
+                //
             }
         });
         mAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
@@ -140,14 +166,23 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
         });
     }
 
-    private void loadRotateAnimation(View view){
-        view.setVisibility(View.VISIBLE);
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view,"rotation",0,360);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setRepeatCount(-1);
-        animator.setDuration(2000);
-        animator.start();
+    private void updateItemStatus(View itemView,int position) {
+//        int pos =XmPlayerManager.getInstance(_mActivity).getCurrentIndex();
+        mAdapter.loadRotateAnimation(itemView,true);
+//        BGAViewHolderHelper holder =recycler.findViewHolderForAdapterPosition(position);
+
+//        mAdapter.loadRotateAnimation(holder.getItemViewType().findViewById(R.id.iv_play_music));
+//       get(position);
     }
+
+//    private void loadRotateAnimation(View view) {
+//        view.setVisibility(View.VISIBLE);
+//        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0, 360);
+//        animator.setInterpolator(new LinearInterpolator());
+//        animator.setRepeatCount(-1);
+//        animator.setDuration(2000);
+//        animator.start();
+//    }
 
 
     @Override
@@ -190,16 +225,16 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mPlayerManager.removePlayerStatusListener(listener);
+//        mPlayerManager.removePlayerStatusListener(listener);
     }
 
-    XmPlayerStatusAdapter listener = new XmPlayerStatusAdapter() {
-        @Override
-        public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
-            super.onSoundSwitch(playableModel, playableModel1);
-            if (mAdapter != null) {
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-    };
+//    XmPlayerStatusAdapter listener = new XmPlayerStatusAdapter() {
+//        @Override
+//        public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+//            super.onSoundSwitch(playableModel, playableModel1);
+//            if (mAdapter != null) {
+//                mAdapter.notifyDataSetChanged();
+//            }
+//        }
+//    };
 }

@@ -4,10 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.facebook.drawee.view.DraweeView;
-import com.google.gson.GsonBuilder;
 import com.salton123.common.image.FrescoImageLoader;
 import com.salton123.util.DateUtils;
-import com.salton123.util.LogUtils;
 import com.salton123.xm.R;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
@@ -37,6 +35,6 @@ public class AlbumAdapter extends BGARecyclerViewAdapter<Album> {
         ;
         if (model.getLastUptrack() == null) helper.getView(R.id.subhead).setVisibility(View.GONE);
         FrescoImageLoader.display((DraweeView) helper.getView(R.id.sdv_thumbnail), model.getCoverUrlLarge());
-        LogUtils.e("aa" + new GsonBuilder().setPrettyPrinting().create().toJson(model));
+//        LogUtils.e("aa" + new GsonBuilder().setPrettyPrinting().create().toJson(model));
     }
 }

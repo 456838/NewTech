@@ -28,7 +28,10 @@ public class TracksFmPresenter extends RxPresenter<TracksFmContract.View> implem
 
             @Override
             public void onSuccess(TrackList trackList) {
-                mView.showTracks(trackList);
+                if(mView!=null){        //抛弃UI销毁以后的操作
+                    mView.showTracks(trackList);
+                }
+
             }
 
             @Override

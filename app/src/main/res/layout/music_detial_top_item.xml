@@ -10,7 +10,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         fresco:failureImage="@drawable/default_pic_load"
         fresco:placeholderImage="@drawable/default_pic_load"
         fresco:actualImageScaleType="centerCrop"

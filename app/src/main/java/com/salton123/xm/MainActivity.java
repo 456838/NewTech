@@ -1,31 +1,19 @@
 package com.salton123.xm;
 
 import android.Manifest;
-import android.app.Notification;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
-import android.view.View;
 
 import com.salton123.base.ApplicationBase;
 import com.salton123.base.BaseSupportActivity;
 import com.salton123.base.BaseSupportFragment;
 import com.salton123.event.StartBrotherEvent;
 import com.salton123.util.EventUtil;
-import com.salton123.util.log.MLog;
 import com.salton123.xm.mvp.fm.AlbumListFragment;
-import com.salton123.xm.view.widget.floatingmusicmenu.FloatingMusicMenu;
-import com.salton123.xm.wrapper.XmAdsStatusAdapter;
-import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.tbruyelle.rxpermissions.Permission;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
-import com.ximalaya.ting.android.opensdk.model.PlayableModel;
-import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
-import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
-import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
-import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -43,15 +31,10 @@ import rx.Subscriber;
 public class MainActivity extends BaseSupportActivity {
 
     private CommonRequest mXimalaya;
-    private XmPlayerManager mPlayerManager;
-
-    //FloatingMusicButton
-    private FloatingMusicMenu musicMenu;
-    private FloatingActionButton playingBtn, modeBtn, detailBtn, nextBtn;
 
     @Override
     public int GetLayout() {
-        return R.layout.aty_main;
+        return R.layout.fm_container;
     }
 
     @Override
@@ -62,24 +45,6 @@ public class MainActivity extends BaseSupportActivity {
         }
         mXimalaya = CommonRequest.getInstanse();
         mXimalaya.init(this, XmConfig.APP_SECRET);
-        mPlayerManager = XmPlayerManager.getInstance(this);
-        Notification mNotification = XmNotificationCreater.getInstanse(this).initNotification(this.getApplicationContext(), MainActivity.class);
-        // 如果之前贵方使用了 `XmPlayerManager.init(int id, Notification notification)` 这个初始化的方式
-        // 请参考`4.8 播放器通知栏使用`重新添加新的通知栏布局,否则直接升级可能导致在部分手机播放时崩溃
-        // 如果不想使用sdk内部搞好的notification,或者想自建notification 可以使用下面的  init()函数进行初始化
-        mPlayerManager.init((int) System.currentTimeMillis(), mNotification);
-//		mPlayerManager.init();
-        mPlayerManager.addPlayerStatusListener(playerStatusAdapter);
-        mPlayerManager.addAdsStatusListener(adsStatusAdapter);
-        mPlayerManager.setOnConnectedListerner(new XmPlayerManager.IConnectListener() {
-            @Override
-            public void onConnected() {
-                mXimalaya.setDefaultPagesize(50);
-                mPlayerManager.setPlayMode(XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP);
-                MLog.info("newsalton", "sdk connected");
-            }
-        });
-
         // 此代码表示播放时会去监测下是否已经下载
         XmPlayerManager.getInstance(this).setCommonBusinessHandle(XmDownloadManager.getInstance());
         // 可以监听该Activity下的所有Fragment的18个 生命周期方法
@@ -100,36 +65,6 @@ public class MainActivity extends BaseSupportActivity {
 
     @Override
     public void InitViewAndData() {
-        musicMenu = f(R.id.floatingMusicMenu);
-        playingBtn = f(R.id.fab_play);
-        modeBtn =f(R.id.fab_mode);
-        nextBtn =f(R.id.fab_next);
-        detailBtn =f(R.id.fab_player);
-        playingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toast("playingBtn");
-            }
-        });
-        modeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toast("playingBtn");
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toast("playingBtn");
-            }
-        });
-        detailBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toast("playingBtn");
-            }
-        });
 
     }
 
@@ -163,54 +98,7 @@ public class MainActivity extends BaseSupportActivity {
                 });
     }
 
-    XmPlayerStatusAdapter playerStatusAdapter = new XmPlayerStatusAdapter() {
-        @Override
-        public void onPlayStart() {
-            musicMenu.rotateStart();
-        }
 
-        @Override
-        public void onPlayPause() {
-            musicMenu.rotateStop();
-        }
-
-        @Override
-        public void onPlayStop() {
-            musicMenu.rotateStop();
-        }
-
-
-        @Override
-        public void onPlayProgress(int currPos, int duration) {
-
-            float progress = (float) currPos * 100 / (float) duration;
-            musicMenu.setProgress(progress);
-            System.out.println("currPos:" + currPos + ",duration:" + duration + ",progress=" + progress);
-        }
-
-        @Override
-        public boolean onError(XmPlayerException e) {
-            return false;
-        }
-
-        @Override
-        public void onSoundSwitch(PlayableModel lastModel, PlayableModel curMode) {
-
-        }
-    };
-
-    XmAdsStatusAdapter adsStatusAdapter = new XmAdsStatusAdapter() {
-        @Override
-        public void onStartGetAdsInfo() {
-
-        }
-    };
-
-    @Subscribe
-    public void updateCover(Track track) {
-        track.getCoverUrlSmall();
-//        musicMenu.setMusicCover(getResources().getDrawable(R.drawable.moefou));
-    }
 
     /**
      * start other BrotherFragment

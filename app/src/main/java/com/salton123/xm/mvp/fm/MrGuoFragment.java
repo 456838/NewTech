@@ -40,7 +40,7 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<MrGuoFragmentPre
 
     @Override
     public int GetLayout() {
-        return R.layout.fm_mr_guo;
+        return R.layout.fm_album_list;
     }
 
     Album mAlbum;

@@ -231,6 +231,15 @@ public class FloatingMusicMenu extends ViewGroup {
         }
     }
 
+    public void setMusicCover(String url) {
+        floatingMusicButton.setCoverDrawable(null);
+        if (isRotated) {
+            rotateStart();
+        } else {
+            rotateStop();
+        }
+    }
+
 
     public void setMusicCover(RotatingProgressDrawable drawable) {
         floatingMusicButton.setCoverDrawable(drawable);

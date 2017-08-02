@@ -40,14 +40,16 @@
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
+        android:visibility="invisible"
         android:src="@drawable/ic_launcher" />
 
     <ImageView
         android:id="@+id/iv_play_music"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_toLeftOf="@+id/iv_download"
         android:src="@drawable/ic_play_music"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/iv_download"
+        android:layout_toStartOf="@+id/iv_download" />
 </RelativeLayout>
