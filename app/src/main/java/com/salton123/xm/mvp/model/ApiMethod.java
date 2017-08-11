@@ -7,6 +7,7 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
+import com.ximalaya.ting.android.opensdk.model.category.Category;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
@@ -14,9 +15,12 @@ import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import java.util.HashMap;
 import java.util.Map;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 
 /**
  * User: 巫金生(newSalton@outlook.com)
@@ -58,6 +62,72 @@ public class ApiMethod {
             }
         });
     }
+
+    public static Observable<CategoryList> getCategory() {
+        return Observable.create(new ObservableOnSubscribe<CategoryList>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<CategoryList> emitter) throws Exception {
+                Map<String, String> map = new HashMap<String, String>();        //不需要参数
+                CommonRequest.getCategories(map, new IDataCallBack<CategoryList>() {
+                    @Override
+                    public void onSuccess(CategoryList categoryList) {
+                        emitter.onNext(categoryList);
+                    }
+
+                    @Override
+                    public void onError(int code, String message) {
+
+                        emitter.onError(new Exception(message));
+                    }
+                });
+            }
+        });
+    }
+
+    public static Observable<TagList> getTag(final long cagetoryId) {
+        return Observable.create(new ObservableOnSubscribe<TagList>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<TagList> emitter) throws Exception {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(DTransferConstants.CATEGORY_ID, cagetoryId + "");
+                map.put(DTransferConstants.TYPE, 0 + "");
+                CommonRequest.getTags(map, new IDataCallBack<TagList>() {
+
+                    @Override
+                    public void onSuccess(TagList tagList) {
+                        emitter.onNext(tagList);
+                    }
+
+                    @Override
+                    public void onError(int i, String message) {
+
+                        emitter.onError(new Exception(message));
+                    }
+                });
+            }
+        });
+    }
+
+    public static Observable<Category> getFrom(final CategoryList categoryList) {
+        if (categoryList==null ||categoryList.getCategories()==null)return null ;
+        return Observable.fromArray(categoryList.getCategories().toArray(new Category[categoryList.getCategories().size()]));
+    }
+
+    public static Observable<TagList> test() {
+        return getCategory().flatMap(new Function<CategoryList, ObservableSource<Category>>() {
+            @Override
+            public ObservableSource<Category> apply(@NonNull CategoryList categoryList) throws Exception {
+                return getFrom(categoryList);
+            }
+        }).flatMap(new Function<Category, ObservableSource<TagList>>() {
+            @Override
+            public ObservableSource<TagList> apply(@NonNull Category category) throws Exception {
+                return getTag(category.getId());
+            }
+        });
+    }
+
+
 
     //获取专辑标签或者声音标签
     public void getTags(final HttpResponseHandler<String> responseHandler) {
@@ -119,9 +189,9 @@ public class ApiMethod {
     }
 
     public Observable<AlbumList> getObservableAlbum() {
-        return Observable.create(new Observable.OnSubscribe<AlbumList>() {
+        return Observable.create(new ObservableOnSubscribe<AlbumList>() {
             @Override
-            public void call(final Subscriber<? super AlbumList> subscriber) {
+            public void subscribe(@NonNull final ObservableEmitter<AlbumList> emitter) throws Exception {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put(DTransferConstants.CATEGORY_ID, "12");
                 map.put(DTransferConstants.TAG_NAME, "郭德纲");
@@ -130,13 +200,13 @@ public class ApiMethod {
                     @Override
                     public void onSuccess(AlbumList albumList) {
                         if (albumList != null) {
-                            subscriber.onNext(albumList);
+                            emitter.onNext(albumList);
                         }
                     }
 
                     @Override
                     public void onError(int i, String s) {
-                        subscriber.onError(new Exception(s));
+                        emitter.onError(new Exception(s));
                     }
                 });
             }
@@ -144,9 +214,9 @@ public class ApiMethod {
     }
 
     public Observable<TrackList> getObservableTracks(final AlbumList albumList) {
-        return Observable.create(new Observable.OnSubscribe<TrackList>() {
+        return Observable.create(new ObservableOnSubscribe<TrackList>() {
             @Override
-            public void call(final Subscriber<? super TrackList> subscriber) {
+            public void subscribe(@NonNull final ObservableEmitter<TrackList> emitter) throws Exception {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put(DTransferConstants.ALBUM_ID, albumList.getAlbums().get(0).getId() + "");
                 map.put(DTransferConstants.SORT, "asc");
@@ -155,39 +225,16 @@ public class ApiMethod {
 
                     @Override
                     public void onSuccess(TrackList trackList) {
-                        subscriber.onNext(trackList);
+                        emitter.onNext(trackList);
                     }
 
                     @Override
                     public void onError(int i, String s) {
-                        subscriber.onError(new Exception(s));
+                        emitter.onError(new Exception(s));
                     }
                 });
             }
-        });
-    }
 
-    public void getAlbumListAndTracks(final HttpResponseHandler<String> responseHandler) {
-        getObservableAlbum().flatMap(new Func1<AlbumList, Observable<?>>() {
-            @Override
-            public Observable<?> call(AlbumList albumList) {
-                return getObservableTracks(albumList);
-            }
-        }).subscribe(new Subscriber<Object>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Object o) {
-
-            }
         });
     }
 

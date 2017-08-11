@@ -1,13 +1,15 @@
 package com.salton123.xm.mvp.fm;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.salton123.base.BaseSupportFragment;
-import com.salton123.util.SystemUtils;
 import com.salton123.xm.R;
 import com.salton123.xm.view.widget.StatusTitleBar;
 
@@ -46,7 +48,7 @@ public class AboutFragment extends BaseSupportFragment{
             }
         });
         tv_version=f(R.id.tv_version);
-        String version = SystemUtils.getAppVersionName(_mActivity);
+        String version = getAppVersionName(_mActivity);
         tv_version.setText("V "+version);
         titleBar = f(R.id.tv_titlebar);
         titleBar.setTitleText("关于", View.VISIBLE).setBackText("返回",View.VISIBLE).setBackListener(new View.OnClickListener() {
@@ -72,5 +74,23 @@ public class AboutFragment extends BaseSupportFragment{
         });
 
 
+    }
+
+    /**
+     * 获取版本号
+     *
+     * @param context
+     * @return
+     */
+    public static String getAppVersionName(Context context) {
+        PackageManager manager = context.getPackageManager();
+        String appVersionName = "";
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            appVersionName = info.versionName; // 版本名，versionCode同理
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return appVersionName;
     }
 }

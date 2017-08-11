@@ -95,7 +95,7 @@
                 android:paddingRight="10.0dip"
                 android:paddingTop="12.0dip"
                 android:text="分享该应用"
-                android:textColor="@color/bootstrap_brand_primary"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16.0dip" />
 
             <View
