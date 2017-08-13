@@ -1,25 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    sothree:umanoPanelHeight="68dp"
+    sothree:umanoDragView="@+id/dragView"
     sothree:umanoOverlay="false"
-    sothree:umanoPanelHeight="0dp"
-    sothree:umanoShadowHeight="@dimen/card_elevation">
+    sothree:umanoScrollableView="@+id/list">
 
+    <!-- MAIN CONTENT -->
     <FrameLayout
-        android:id="@+id/content_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <FrameLayout
-        android:id="@+id/sliding_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:colorBackground">
+        android:orientation="vertical"
+        android:id="@+id/fl_main_content"
+        >
+       <include layout="@layout/fm_album_list"/>
+    </FrameLayout>
+    <!-- SLIDING LAYOUT -->
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="false"
+        android:id="@+id/dragView"
+        >
         <FrameLayout
             android:id="@+id/player_fragment_container"
             android:layout_width="match_parent"
@@ -32,5 +43,4 @@
             android:layout_height="@dimen/mini_player_height" />
 
     </FrameLayout>
-
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

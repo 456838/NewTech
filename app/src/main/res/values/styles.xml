@@ -15,7 +15,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textColorSecondary">#ffffff</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:windowBackground">@drawable/layer_windows_background</item>
     </style>
 </resources>

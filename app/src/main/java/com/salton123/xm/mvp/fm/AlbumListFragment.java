@@ -63,7 +63,7 @@ public class AlbumListFragment extends BaseSupportPresenterFragment<AlbumListFmP
     private int page = 1;
     private int pageSize = 20;
     private int calcDimension = 1;
-    private String tagName = "郭德纲";
+    private String tagName ="郭德钢";
     StatusTitleBar mHeaderView;
     private XmPlayerManager mPlayerManager;
 
@@ -74,6 +74,7 @@ public class AlbumListFragment extends BaseSupportPresenterFragment<AlbumListFmP
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
+        tagName = getArguments().getString(ARG_ITEM);
         EventUtil.register(this);
         mPresenter = new AlbumListFmPresenter();
         int ranNum = new Random().nextInt(10);

@@ -7,9 +7,12 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
+import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.category.Category;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
+import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
+import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 
 import java.util.HashMap;
@@ -20,6 +23,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 
 /**
@@ -237,5 +241,126 @@ public class ApiMethod {
 
         });
     }
+
+    /**
+     * 搜索专辑
+     * @param keyword 搜索关键词
+     * @param category  分类ID，不填或者为0检索全库
+     * @param page 返回第几页，必须大于等于1，不填默认为1
+     * @return
+     */
+    public static Observable<SearchAlbumList> getSearchedAlbums(final String keyword, final String category, final int page){
+        return Observable.create(new ObservableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter emitter) throws Exception {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(DTransferConstants.SEARCH_KEY, keyword);
+                map.put(DTransferConstants.CATEGORY_ID, category);
+                map.put(DTransferConstants.PAGE, page+"");
+                CommonRequest.getSearchedAlbums(map, new IDataCallBack<SearchAlbumList>(){
+
+                    @Override
+                    public void onSuccess(SearchAlbumList searchAlbumList) {
+
+                        emitter.onNext(searchAlbumList);
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onNext(new Exception(s));
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     *
+     * 搜索声音
+     * @param keyword 搜索关键词
+     * @param category  分类ID，不填或者为0检索全库
+     * @param page 返回第几页，必须大于等于1，不填默认为1
+     * @return
+     */
+    public static Observable<SearchTrackList> getSearchedTracks(final String keyword, final String category, final int page){
+        return Observable.create(new ObservableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter emitter) throws Exception {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(DTransferConstants.SEARCH_KEY, keyword);
+                map.put(DTransferConstants.CATEGORY_ID, category);
+                map.put(DTransferConstants.PAGE, page + "");
+                CommonRequest.getSearchedTracks(map, new IDataCallBack<SearchTrackList>() {
+                    @Override
+                    public void onSuccess(SearchTrackList searchTrackList) {
+                        emitter.onNext(searchTrackList);
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onNext(new Exception(s));
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     *
+     * 搜索声音
+     * @param keyword 搜索关键词
+     * @param category  分类ID，不填或者为0检索全库
+     * @param page 返回第几页，必须大于等于1，不填默认为1
+     * @return
+     */
+    public static Observable<RadioList> getSearchedRadios(final String keyword, final String category, final int page){
+        return Observable.create(new ObservableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter emitter) throws Exception {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(DTransferConstants.SEARCH_KEY, keyword);
+                map.put(DTransferConstants.CATEGORY_ID, category);
+                map.put(DTransferConstants.PAGE, page + "");
+                CommonRequest.getSearchedRadios(map, new IDataCallBack<RadioList>() {
+                    @Override
+                    public void onSuccess(RadioList radioList) {
+                        emitter.onNext(radioList);
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onNext(new Exception(s));
+                    }
+                });
+            }
+        });
+    }
+
+    public static Observable<MultiSearchBean> multiSearch(String keyword){
+        return getSearchedAlbums(keyword,"0",1).zipWith(getSearchedRadios(keyword,"0",1), new BiFunction<SearchAlbumList, RadioList, MultiSearchBean>() {
+            @Override
+            public MultiSearchBean apply(@NonNull SearchAlbumList searchAlbumList, @NonNull RadioList radioList) throws Exception {
+                MultiSearchBean bean = new MultiSearchBean();
+                bean.radioList =radioList;
+                bean.searchAlbumList=searchAlbumList ;
+                return bean;
+            }
+        }).zipWith(getSearchedTracks("keyword", "0", 1), new BiFunction<MultiSearchBean, SearchTrackList, MultiSearchBean>() {
+            @Override
+            public MultiSearchBean apply(@NonNull MultiSearchBean multiSearchBean, @NonNull SearchTrackList searchTrackList) throws Exception {
+                    multiSearchBean.searchTrackList=searchTrackList;
+                return multiSearchBean;
+            }
+        });
+    }
+
+
+
+
+
+
+
+
 
 }

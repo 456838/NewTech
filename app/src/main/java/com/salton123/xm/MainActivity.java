@@ -8,7 +8,7 @@ import com.salton123.base.BaseSupportActivity;
 import com.salton123.base.BaseSupportFragment;
 import com.salton123.event.StartBrotherEvent;
 import com.salton123.util.EventUtil;
-import com.salton123.xm.mvp.fm.SlidingUpPanelFragment;
+import com.salton123.xm.mvp.fm.IndexFragment;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -40,7 +40,7 @@ public class MainActivity extends BaseSupportActivity {
     public void InitVariable(Bundle savedInstanceState) {
         EventUtil.register(this);
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(SlidingUpPanelFragment.class));
+            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(IndexFragment.class));
         }
         mXimalaya = CommonRequest.getInstanse();
         mXimalaya.init(this, XmConfig.APP_SECRET);

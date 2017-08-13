@@ -21,24 +21,24 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            //配置签名密钥的alias，pwd，path
-            keyAlias 'newsalton'
-            keyPassword 'newsalton'
-            storeFile file('keystore/newsalton.jks')
-            storePassword 'newsalton'
-        }
-
-        debug {
-            //配置签名密钥的alias，pwd，path
-            keyAlias 'newsalton'
-            keyPassword 'newsalton'
-            storeFile file('keystore/newsalton.jks')
-            storePassword 'newsalton'
-        }
-
-    }
+//    signingConfigs {
+//        release {
+//            //配置签名密钥的alias，pwd，path
+//            keyAlias 'newsalton'
+//            keyPassword 'newsalton'
+//            storeFile file('keystore/newsalton.jks')
+//            storePassword 'newsalton'
+//        }
+//
+//        debug {
+//            //配置签名密钥的alias，pwd，path
+//            keyAlias 'newsalton'
+//            keyPassword 'newsalton'
+//            storeFile file('keystore/newsalton.jks')
+//            storePassword 'newsalton'
+//        }
+//
+//    }
 }
 
 dependencies {
@@ -52,4 +52,5 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
     compile 'com.afollestad:material-cab:0.1.12'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.27'
 }
