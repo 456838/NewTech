@@ -49,7 +49,7 @@
 
         <fragment
             android:id="@+id/mini_player_fragment"
-            class="com.salton123.xm.mvp.fm.MiniPlayerFragment"
+            class="com.salton123.xm.fm.MiniPlayerFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mini_player_height" />
     </FrameLayout>

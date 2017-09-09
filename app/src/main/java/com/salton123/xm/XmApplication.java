@@ -43,6 +43,7 @@ public class XmApplication extends ApplicationBase {
                 .install();
 //        Timber.plant(new Timber.DebugTree());
         MLog.initialize(XmConfig.XM_FILE_PATH+"log");
+        initXm();
     }
 
 //    /**

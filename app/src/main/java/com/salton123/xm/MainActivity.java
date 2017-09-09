@@ -1,15 +1,13 @@
 package com.salton123.xm;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 
-import com.salton123.base.ApplicationBase;
 import com.salton123.base.BaseSupportActivity;
 import com.salton123.base.BaseSupportFragment;
 import com.salton123.event.StartBrotherEvent;
 import com.salton123.util.EventUtil;
-import com.salton123.xm.mvp.fm.MrGuoFragment;
+import com.salton123.xm.fm.MainFragment;
 import com.salton123.xm.util.ToolUtil;
 import com.salton123.xm.wrapper.XmAdsStatusAdapter;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
@@ -44,7 +42,7 @@ public class MainActivity extends BaseSupportActivity {
     public void InitVariable(Bundle savedInstanceState) {
         EventUtil.register(this);
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(MrGuoFragment.class));
+            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(MainFragment.class));
         }
         // 此代码表示播放时会去监测下是否已经下载
         mPlayerManager = XmPlayerManager.getInstance(this);
@@ -60,7 +58,7 @@ public class MainActivity extends BaseSupportActivity {
                 toast("播放器初始化成功！");
             }
         });
-        XmlyInitializer.getInstance().registerReceiver(BroadcastReceiver.class,MainActivity.class);
+        XmlyInitializer.getInstance().registerReceiver(XmlyBroadcastReceiver.class,MainActivity.class);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class MainActivity extends BaseSupportActivity {
                     @Override
                     public void accept(Permission permission) throws Exception {
                         if (permission.name.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && permission.granted) {
-                            ApplicationBase.<XmApplication>getInstance().initXm();
+//                            ApplicationBase.<XmApplication>getInstance().initXm();
                         }
                     }
                 });
