@@ -38,7 +38,7 @@ public class FirstFragment extends BaseSupportFragment {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         if (savedInstanceState == null) {
-//            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(VideoFragment.class));
+            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(IndexFragment.class));
         }
     }
 }

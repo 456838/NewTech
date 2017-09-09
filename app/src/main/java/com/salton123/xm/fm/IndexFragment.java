@@ -70,6 +70,12 @@ public class IndexFragment extends BaseSupportPresenterFragment<OneToNContract.P
     @Override
     public void onIndexFmError(String msg) {
         toast(msg);
-        mPresenter.getIndexFmData();
+        try {
+            Thread.sleep(1500);
+            mPresenter.getIndexFmData();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }
