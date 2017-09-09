@@ -32,7 +32,7 @@ public class AlbumAdapter extends BGARecyclerViewAdapter<Album> {
                 .setText(R.id.track_tags, "-" + DateUtils.getDateTime(model.getUpdatedAt()) + "-")
                 .setText(R.id.subhead, "新作：" + model.getLastUptrack() == null ? "" : model.getLastUptrack().getTrackTitle())
 //                .setText(R.id.post_time, model.getAlbumIntro() + "")
-        ;
+ ;
         if (model.getLastUptrack() == null) helper.getView(R.id.subhead).setVisibility(View.GONE);
         FrescoImageLoader.display((DraweeView) helper.getView(R.id.sdv_thumbnail), model.getCoverUrlLarge());
 //        LogUtils.e("aa" + new GsonBuilder().setPrettyPrinting().create().toJson(model));

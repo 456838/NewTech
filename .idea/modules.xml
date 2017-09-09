@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NewTech.iml" filepath="$PROJECT_DIR$/NewTech.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XMLY.iml" filepath="$PROJECT_DIR$/XMLY.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

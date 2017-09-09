@@ -17,8 +17,8 @@ import com.salton123.common.image.FrescoImageLoader;
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
 import com.salton123.util.EventUtil;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.business.TracksFmContract;
-import com.salton123.xm.mvp.business.TracksFmPresenter;
+import com.salton123.xm.mvp.business.OneToNContract;
+import com.salton123.xm.mvp.business.OneToNPresenter;
 import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.view.adapter.TracksAdapter;
 import com.ximalaya.ting.android.opensdk.auth.utils.StringUtil;
@@ -43,7 +43,7 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
  * Time: 20:35
  * Description:
  */
-public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresenter> implements TracksFmContract.View {
+public class TracksFragment extends BaseSupportPresenterFragment<OneToNContract.Presenter> implements OneToNContract.TracksFmIView {
     private SwipeRefreshLayout refresh;
     private RecyclerView recycler;
     private TracksAdapter mAdapter;
@@ -70,7 +70,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
                 album_id = mAlbum.getId();
             }
         }
-        mPresenter = new TracksFmPresenter();
+        mPresenter = new OneToNPresenter();
 //        mPlayerManager = XmPlayerManager.getInstance(_mActivity);
 //        mPlayerManager.addPlayerStatusListener(listener);
     }
@@ -199,6 +199,11 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
         initHeaderData(list);
     }
 
+    @Override
+    public void onShowTracksError(int resCode, String errorMsg) {
+        toast(errorMsg);
+    }
+
 
     private void initHeaderData(TrackList list) {
         SimpleDraweeView sdv_thumbnail = (SimpleDraweeView) ll_track_intro.findViewById(R.id.sdv_thumbnail);
@@ -217,10 +222,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     }
 
 
-    @Override
-    public void onError(int resCode, String errorMsg) {
-        toast(errorMsg);
-    }
+
 
     @Override
     public void onDestroyView() {

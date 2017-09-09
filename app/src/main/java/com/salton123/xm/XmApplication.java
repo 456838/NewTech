@@ -4,8 +4,6 @@ import com.salton123.base.ApplicationBase;
 import com.salton123.util.FileUtils;
 import com.salton123.util.log.MLog;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-import com.ximalaya.ting.android.opensdk.util.Logger;
-import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.http.RequestParams;
 import com.ximalaya.ting.android.sdkdownloader.http.app.RequestTracker;
 import com.ximalaya.ting.android.sdkdownloader.http.request.UriRequest;
@@ -14,7 +12,6 @@ import java.io.File;
 
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
-import timber.log.Timber;
 
 /**
  * User: 巫金生(newSalton@outlook.com)
@@ -44,21 +41,32 @@ public class XmApplication extends ApplicationBase {
                     }
                 })
                 .install();
-        Timber.plant(new Timber.DebugTree());
-
+//        Timber.plant(new Timber.DebugTree());
+        MLog.initialize(XmConfig.XM_FILE_PATH+"log");
     }
 
+//    /**
+//     * 喜马拉雅兼容x86平台
+//     */
+//    public void setUseSystemPlayer() {
+//        try {
+//            Class<?> clazz = XmPlayerConfig.class;
+//            Method method = clazz.getMethod("setUseSystemPlayer");
+//            method.invoke(clazz.newInstance(), true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     public void initXm(){
-        MLog.initialize(XmConfig.XM_FILE_PATH+"log");
         String filePath =XmConfig.XM_FILE_PATH+"mp3";
         if(!FileUtils.isFolderExist(filePath)){
             boolean ret =  new File(filePath).mkdirs();
-//            if (!ret) return;
-//            new File(filePath).getParent().
+            if (ret) MLog.info(TAG,"mkdir error");
         }
-        System.out.println("地址是" + filePath);
+        MLog.info(TAG,"filePath="+filePath);
         if (BaseUtil.isMainProcess(this)) {
-            XmDownloadManager.Builder(this)
+            XmlyInitializer.getInstance().init(this)
                     .maxDownloadThread(1)            // 最大的下载个数 默认为1 最大为3
                     .maxSpaceSize(Long.MAX_VALUE)    // 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
                     .connectionTimeOut(15000)        // 下载时连接超时的时间 ,单位毫秒 默认 30000
@@ -75,49 +83,41 @@ public class XmApplication extends ApplicationBase {
     private RequestTracker requestTracker = new RequestTracker() {
         @Override
         public void onWaiting(RequestParams params) {
-            Logger.log("TingApplication : onWaiting " + params);
             MLog.info(TAG,"onWaiting,RequestParams:"+params);
         }
 
         @Override
         public void onStart(RequestParams params) {
-            Logger.log("TingApplication : onStart " + params);
             MLog.info(TAG,"onStart,RequestParams:"+params);
         }
 
         @Override
         public void onRequestCreated(UriRequest request) {
-            Logger.log("TingApplication : onRequestCreated " + request);
             MLog.info(TAG,"onStart,UriRequest:"+request);
         }
 
         @Override
         public void onSuccess(UriRequest request, Object result) {
-            Logger.log("TingApplication : onSuccess " + request + "   result = " + result);
             MLog.info(TAG,"onSuccess,UriRequest:"+request+",Object:"+result);
         }
 
         @Override
         public void onRemoved(UriRequest request) {
-            Logger.log("TingApplication : onRemoved " + request);
             MLog.info(TAG,"onRemoved,UriRequest:"+request);
         }
 
         @Override
         public void onCancelled(UriRequest request) {
-            Logger.log("TingApplication : onCanclelled " + request);
             MLog.info(TAG,"onCancelled,UriRequest:"+request);
         }
 
         @Override
         public void onError(UriRequest request, Throwable ex, boolean isCallbackError) {
-            Logger.log("TingApplication : onError " + request + "   ex = " + ex + "   isCallbackError = " + isCallbackError);
             MLog.info(TAG,"onCancelled,UriRequest:"+request+",Throwable:"+ex+",isCallbackError"+isCallbackError);
         }
 
         @Override
         public void onFinished(UriRequest request) {
-            Logger.log("TingApplication : onFinished " + request);
             MLog.info(TAG,"onFinished,UriRequest:"+request);
         }
     };

@@ -1,4 +1,4 @@
-package com.salton123.xm.mvp.fm;
+package com.salton123.xm.mvp.fm.headerType;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
 import com.salton123.xm.R;
+
 import com.salton123.xm.mvp.business.OneToNContract;
 import com.salton123.xm.mvp.business.OneToNPresenter;
 import com.salton123.xm.mvp.view.EndLessOnScrollListener;
 import com.salton123.xm.mvp.view.adapter.MrGuoTrackAdapter;
 import com.salton123.xm.wrapper.XmPlayerStatusAdapter;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
-import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
@@ -28,7 +28,7 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
  * Time: 10:17
  * Description:
  */
-public class MrGuoFragment extends BaseSupportPresenterFragment<OneToNContract.Presenter> implements OneToNContract.SearchedTracksFmIView {
+public class SearchedTracksFragment extends BaseSupportPresenterFragment<OneToNContract.Presenter> implements OneToNContract.SearchedTracksFmIView {
     private SwipeRefreshLayout refresh;
     private RecyclerView recycler;
     private MrGuoTrackAdapter mAdapter;
@@ -43,15 +43,14 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<OneToNContract.P
         return R.layout.fm_album_list;
     }
 
-    Album mAlbum;
+//    Album mAlbum;
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
-        mAlbum = getArguments().getParcelable(ARG_ITEM);
+        keyword = getArguments().getString(ARG_ITEM);
         mPresenter = new OneToNPresenter();
         mPlayerManager = XmPlayerManager.getInstance(_mActivity);
         mPlayerManager.addPlayerStatusListener(listener);
-//        mPresenter.getCategories();
     }
 
     @Override
@@ -64,7 +63,7 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<OneToNContract.P
             @Override
             public void onRefresh() {
                 page = 1;
-                mPresenter.getSearchedTracks(keyword, categoryId, 2, page++, pageSize);
+                mPresenter.getSearchedTracks(keyword, categoryId, 4, page++, pageSize);
             }
         });
         LinearLayoutManager layout = new LinearLayoutManager(_mActivity);
@@ -72,7 +71,7 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<OneToNContract.P
         recycler.addOnScrollListener(new EndLessOnScrollListener(layout, 1) {
             @Override
             public void onLoadMore() {
-                mPresenter.getSearchedTracks(keyword, categoryId, 2, page++, pageSize);
+                mPresenter.getSearchedTracks(keyword, categoryId, 4, page++, pageSize);
             }
         });
         recycler.setAdapter(mAdapter);
@@ -82,7 +81,7 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<OneToNContract.P
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        mPresenter.getSearchedTracks(keyword, categoryId, 2, page++, pageSize);
+        mPresenter.getSearchedTracks(keyword, categoryId,4, page++, pageSize);
     }
 
     @Override
@@ -94,6 +93,8 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<OneToNContract.P
             }
         });
     }
+
+
 
 
     @Override
@@ -111,8 +112,6 @@ public class MrGuoFragment extends BaseSupportPresenterFragment<OneToNContract.P
             }
         }
     };
-
-
 
     @Override
     public void onSearchedTracksData(SearchTrackList searchTrackList) {
