@@ -1,36 +1,47 @@
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoPanelHeight="68dp"
     sothree:umanoDragView="@+id/dragView"
     sothree:umanoOverlay="false"
+    sothree:umanoPanelHeight="68dp"
     sothree:umanoScrollableView="@+id/list">
 
     <!-- MAIN CONTENT -->
     <FrameLayout
+        android:id="@+id/fl_main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/fl_main_content"
-        >
-       <include layout="@layout/fm_album_list"/>
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+            <include layout="@layout/inject_tablayout" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_index"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </FrameLayout>
     <!-- SLIDING LAYOUT -->
 
     <FrameLayout
+        android:id="@+id/dragView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
-        android:orientation="vertical"
         android:clickable="true"
         android:focusable="false"
-        android:id="@+id/dragView"
-        >
+        android:orientation="vertical">
+
         <FrameLayout
             android:id="@+id/player_fragment_container"
             android:layout_width="match_parent"
@@ -41,6 +52,5 @@
             class="com.salton123.xm.mvp.fm.MiniPlayerFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mini_player_height" />
-
     </FrameLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

@@ -14,7 +14,7 @@ import com.salton123.base.ViewHolder;
 import com.salton123.event.StartBrotherEvent;
 import com.salton123.util.EventUtil;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.model.ApiPair;
+import com.salton123.xm.model.ApiPair;
 
 import java.util.Arrays;
 
@@ -29,7 +29,8 @@ public class ApiTestFragment extends BaseSupportFragment {
             new ApiPair("批量获取专辑列表", "getBatch"), new ApiPair("获取喜马拉雅内容分类", "getCategories")
             ,new ApiPair("获取专辑标签或者声音标签","getTags")
             ,new ApiPair("根据分类和标签获取某个分类某个标签下的专辑列表（最火/最新/最多播放）","getAlbumList")
-            ,new ApiPair("专辑浏览，根据专辑ID获取专辑下的声音列表","getTracks")
+            ,new ApiPair("专辑浏览，根据专辑ID获取专辑下的声音列表","getTracksTest")
+            ,new ApiPair("搜索专辑","getSearchedAlbumsTest")
     };
 
     ApiAdapter mApiAdapter;

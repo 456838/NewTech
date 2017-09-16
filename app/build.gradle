@@ -12,12 +12,12 @@ android {
         ndk {
             abiFilters "armeabi-v7a"
         }
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
         }
     }
 
@@ -39,6 +39,14 @@ android {
 //        }
 //
 //    }
+}
+
+// 这个plugin需要放在android配置之后，因为需要读取android中的配置项
+apply plugin: 'replugin-plugin-gradle'
+repluginPluginConfig {
+    pluginName = "xmly"
+    hostApplicationId = "com.duowan.onlyone"
+    hostAppLauncherActivity = "com.duowan.onlyone.controller.aty.MainActivity"
 }
 
 dependencies {

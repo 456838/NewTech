@@ -17,10 +17,10 @@ import com.salton123.common.image.FrescoImageLoader;
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
 import com.salton123.util.EventUtil;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.business.TracksFmContract;
-import com.salton123.xm.mvp.business.TracksFmPresenter;
-import com.salton123.xm.mvp.view.EndLessOnScrollListener;
-import com.salton123.xm.mvp.view.adapter.TracksAdapter;
+import com.salton123.xm.mvp.business.OneToNContract;
+import com.salton123.xm.mvp.business.OneToNPresenter;
+import com.salton123.xm.view.EndLessOnScrollListener;
+import com.salton123.xm.view.adapter.TracksAdapter;
 import com.ximalaya.ting.android.opensdk.auth.utils.StringUtil;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -43,7 +43,7 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
  * Time: 20:35
  * Description:
  */
-public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresenter> implements TracksFmContract.View {
+public class TracksFragment extends BaseSupportPresenterFragment<OneToNContract.Presenter> implements OneToNContract.TracksFmIView {
     private SwipeRefreshLayout refresh;
     private RecyclerView recycler;
     private TracksAdapter mAdapter;
@@ -53,24 +53,42 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     private String sort = "asc";
 //    private XmPlayerManager mPlayerManager;
 
+    public static <T extends Fragment> T newInstance(Class<T> clz, long value) {
+        Bundle bundle = new Bundle();
+        bundle.putLong("arg_item", value);
+        T fragment = null;
+
+        try {
+            fragment =clz.newInstance();
+        } catch (Exception var5) {
+            var5.printStackTrace();
+        }
+
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
     @Override
     public int GetLayout() {
         return R.layout.fm_tracks;
     }
 
-    Album mAlbum;
+
     RelativeLayout ll_track_intro;
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
-        Parcelable parcelable = getArguments().getParcelable(ARG_ITEM);
-        if (parcelable instanceof  Album){
+        if (getArguments().getParcelable(ARG_ITEM) instanceof  Album){
+            Album mAlbum;
             mAlbum = getArguments().getParcelable(ARG_ITEM);
             if(mAlbum!=null){
                 album_id = mAlbum.getId();
             }
+        }else if(getArguments().getLong(ARG_ITEM)>0){
+            album_id= getArguments().getLong(ARG_ITEM);
         }
-        mPresenter = new TracksFmPresenter();
+        mPresenter = new OneToNPresenter();
 //        mPlayerManager = XmPlayerManager.getInstance(_mActivity);
 //        mPlayerManager.addPlayerStatusListener(listener);
     }
@@ -199,6 +217,11 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
         initHeaderData(list);
     }
 
+    @Override
+    public void onShowTracksError(int resCode, String errorMsg) {
+        toast(errorMsg);
+    }
+
 
     private void initHeaderData(TrackList list) {
         SimpleDraweeView sdv_thumbnail = (SimpleDraweeView) ll_track_intro.findViewById(R.id.sdv_thumbnail);
@@ -217,10 +240,7 @@ public class TracksFragment extends BaseSupportPresenterFragment<TracksFmPresent
     }
 
 
-    @Override
-    public void onError(int resCode, String errorMsg) {
-        toast(errorMsg);
-    }
+
 
     @Override
     public void onDestroyView() {

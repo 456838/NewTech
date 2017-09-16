@@ -7,8 +7,8 @@ import android.widget.TextView;
 import com.salton123.base.BaseSupportSwipeBackFragment;
 import com.salton123.callback.HttpResponseHandler;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.model.ApiMethod;
-import com.salton123.xm.mvp.model.ApiPair;
+import com.salton123.xm.model.ApiMethod;
+import com.salton123.xm.model.ApiPair;
 
 import java.lang.reflect.Method;
 
@@ -31,7 +31,6 @@ public class ApiViewFragment extends BaseSupportSwipeBackFragment {
     @Override
     public void InitVariable(Bundle savedInstanceState) {
         pair = (ApiPair) getArguments().getSerializable(ARG_ITEM);
-
     }
 
     @Override

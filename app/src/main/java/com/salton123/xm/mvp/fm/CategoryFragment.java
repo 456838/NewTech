@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.salton123.base.BaseSupportFragment;
 import com.salton123.util.LogUtils;
 import com.salton123.xm.R;
-import com.salton123.xm.mvp.model.ApiMethod;
+import com.salton123.xm.model.ApiMethod;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
