@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Pair;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.salton123.mvp.ui.BaseSupportPresenterFragment;
@@ -14,6 +16,7 @@ import com.salton123.xm.mvp.business.OneToNContract;
 import com.salton123.xm.mvp.business.OneToNPresenter;
 import com.salton123.xm.util.TabLayoutUtil;
 import com.salton123.xm.view.adapter.IndexFragmentAdapter;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
 
@@ -29,7 +32,8 @@ public class IndexFragment extends BaseSupportPresenterFragment<OneToNContract.P
     TabLayout tab_hot_music;
     IndexFragmentAdapter adapter;
     FrameLayout player_fragment_container ;
-
+    FrameLayout dragView;
+    SlidingUpPanelLayout sliding_layout;
 
     @Override
     public int GetLayout() {
@@ -46,6 +50,14 @@ public class IndexFragment extends BaseSupportPresenterFragment<OneToNContract.P
     public void InitViewAndData() {
         vp_hot_music = f(R.id.vp_index);
         tab_hot_music = f(R.id.tab_hot_music);
+        dragView = f(R.id.dragView);
+        sliding_layout = f(R.id.sliding_layout);
+        dragView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
         vp_hot_music.setAdapter(adapter);
         vp_hot_music.setCurrentItem(0, false);
         tab_hot_music.setupWithViewPager(vp_hot_music);
