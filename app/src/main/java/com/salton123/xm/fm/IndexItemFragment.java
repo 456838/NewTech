@@ -1,4 +1,4 @@
-package com.salton123.xm.mvp.fm;
+package com.salton123.xm.fm;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +32,7 @@ public class IndexItemFragment extends BaseSupportFragment{
     public void InitViewAndData() {
         recycler = f(R.id.recycler);
         recycler.setLayoutManager(new GridLayoutManager(_mActivity,2));
+//        mAdapter = new IndexItemAdapter(R.layout.item_section_content,R.layout.def_section_head,mData);
     }
 
     @Override

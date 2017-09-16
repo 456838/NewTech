@@ -14,7 +14,6 @@ import com.ximalaya.ting.android.opensdk.model.tag.TagList;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * User: newSalton@outlook.com
@@ -37,7 +36,6 @@ public class CategoryFragment extends BaseSupportFragment {
             public void accept(TagList tagList) throws Exception {
                 String jsonStr = new GsonBuilder().setPrettyPrinting().create().toJson(tagList);
                 Log.e("aa","accept："+jsonStr);
-                Timber.e("aa",jsonStr);
                 ((WebView)f(R.id.webView)).loadData(jsonStr,"json","utf-8");
             }
         });

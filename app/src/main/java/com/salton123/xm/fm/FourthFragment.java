@@ -1,12 +1,11 @@
-package com.salton123.xm.mvp.fm;
+package com.salton123.xm.fm;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import com.salton123.base.BaseSupportFragment;
 import com.salton123.xm.R;
-import com.salton123.xm.fm.ApiTestFragment;
 
 /**
  * User: 巫金生(newSalton@outlook.com)
@@ -14,33 +13,41 @@ import com.salton123.xm.fm.ApiTestFragment;
  * Time: 11:35
  * Description:
  */
-
-public class SecondFragment extends BaseSupportFragment {
-
+public class FourthFragment extends BaseSupportFragment {
+    ProgressDialog mProgressDialog;
+    private String TAG = "FourthFragment";
     @Override
     public int GetLayout() {
-        return R.layout.fm_container;
+        return R.layout.fm_test;
     }
+
+    private String demoPluginName = "plugindemo01-debug.apk";
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
-            
+
+
+
     }
+
 
     @Override
     public void InitViewAndData() {
-        Toast.makeText(_mActivity,"Second",Toast.LENGTH_SHORT).show();
+        mProgressDialog = new ProgressDialog(_mActivity);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setMessage("插件加载中...");
+
+
     }
 
     @Override
     public void InitListener() {
+
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_container,BaseSupportFragment.newInstance(ApiTestFragment.class));
-        }
+
     }
 }

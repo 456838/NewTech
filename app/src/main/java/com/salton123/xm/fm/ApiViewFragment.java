@@ -1,4 +1,4 @@
-package com.salton123.xm.mvp.fm;
+package com.salton123.xm.fm;
 
 import android.os.Bundle;
 import android.text.Html;

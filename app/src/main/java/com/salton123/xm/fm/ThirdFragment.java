@@ -1,12 +1,10 @@
-package com.salton123.xm.mvp.fm;
+package com.salton123.xm.fm;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import com.salton123.base.BaseSupportFragment;
 import com.salton123.xm.R;
-import com.salton123.xm.fm.ApiTestFragment;
 
 /**
  * User: 巫金生(newSalton@outlook.com)
@@ -14,8 +12,7 @@ import com.salton123.xm.fm.ApiTestFragment;
  * Time: 11:35
  * Description:
  */
-
-public class SecondFragment extends BaseSupportFragment {
+public class ThirdFragment extends BaseSupportFragment {
 
     @Override
     public int GetLayout() {
@@ -24,23 +21,24 @@ public class SecondFragment extends BaseSupportFragment {
 
     @Override
     public void InitVariable(Bundle savedInstanceState) {
-            
+
     }
+
 
     @Override
     public void InitViewAndData() {
-        Toast.makeText(_mActivity,"Second",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void InitListener() {
+
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_container,BaseSupportFragment.newInstance(ApiTestFragment.class));
+//            loadRootFragment(R.id.fl_container, BaseSupportFragment.newInstance(HotMusicFragment.class));
         }
     }
 }

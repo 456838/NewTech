@@ -1,4 +1,4 @@
-package com.salton123.xm.test;
+package com.salton123.xm.fm.test;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;

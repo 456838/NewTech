@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/mini_player_height"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="false">
 
@@ -34,8 +34,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="段子来了"
-             />
+            android:text="段子来了" />
 
         <ImageView
             android:id="@+id/mini_player_play_pause_button"
