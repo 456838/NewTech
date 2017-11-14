@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_progress"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <!--进度条 -->
+    <com.salton123.xm.test.widget.TimeNeedleSeekBar
+        android:id="@+id/seekbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:indeterminateDrawable="@drawable/ic_launcher"
+        android:max="100"
+        android:maxHeight="40dp"
+        android:progress="70"
+        android:progressDrawable="@drawable/count_down_progress_horizontal"
+        android:secondaryProgress="20"
+        android:splitTrack="false"
+        android:thumbOffset="0dp" />
+
+    <!-- 5秒断点区 -->
+    <ImageView
+        android:id="@+id/least_point"
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:scrollX="20dp"
+        android:background="#FF55FF" />
+
+    <!--断点区-->
+    <RelativeLayout
+        android:id="@+id/point_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent" />
+</FrameLayout>

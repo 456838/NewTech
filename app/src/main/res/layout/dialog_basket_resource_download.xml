@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="171dp"
+    android:layout_height="117dp"
+    android:background="@drawable/bg_download_basketball_progress"
+    android:gravity="center"
+    android:layout_gravity="center"
+    >
+
+    <ImageView
+        android:id="@+id/iv_loading_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/spinner_48_inner_holo" />
+
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下载玩法中..."
+        android:textColor="#fff"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        />
+
+</LinearLayout>

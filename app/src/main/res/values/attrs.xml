@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AbsHListView">
+        <attr name="android:listSelector" />
+        <attr name="android:smoothScrollbar" />
+        <attr name="android:drawSelectorOnTop" />
+        <attr name="android:cacheColorHint" />
+        <attr name="android:scrollingCache" />
+        <attr name="android:choiceMode" />
+        <attr name="hlv_stackFromRight" format="boolean" />
+        <attr name="hlv_transcriptMode">
+            <enum name="disabled" value="0" />
+            <enum name="normal" value="1" />
+            <enum name="alwaysScroll" value="2" />
+        </attr>
+    </declare-styleable>
+    <attr name="hlv_listViewStyle" format="reference" />
+    <attr name="hlv_absHListViewStyle" format="reference" />
+    <attr name="hlv_listPreferredItemWidth" format="dimension" />
+    <declare-styleable name="HListView">
+        <attr name="android:entries" />
+        <attr name="android:divider" />
+        <attr name="hlv_dividerWidth" format="dimension" />
+        <attr name="hlv_headerDividersEnabled" format="boolean" />
+        <attr name="hlv_footerDividersEnabled" format="boolean" />
+        <attr name="hlv_overScrollHeader" format="reference|color" />
+        <attr name="hlv_overScrollFooter" format="reference|color" />
+        <!--
+        When "wrap_content" is used as value of the layout_height property.
+        Pass the id, inside the adapter, of the view being used to measure the view
+        or '-1' to use the default behavior ( default is -1 )
+        -->
+        <attr name="hlv_measureWithChild" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="leftViewId" format="reference" />
+        <attr name="rightViewId" format="reference" />
+        <attr name="contentViewId" format="reference" />
+    </declare-styleable>
+
+    <attr name="progress_unreach_color" format="color"/>
+    <attr name="progress_unreach_height" format="dimension"/>
+    <attr name="progress_reach_color" format="color"/>
+    <attr name="progress_reach_height" format="dimension"/>
+    <attr name="progress_text_color" format="color"/>
+    <attr name="progress_text_size" format="dimension"/>
+    <attr name="progress_text_offset" format="dimension"/>
+
+    <declare-styleable name="HorizontalProgressbarWithProgress">
+        <attr name="progress_unreach_color"/>
+        <attr name="progress_unreach_height"/>
+        <attr name="progress_reach_color"/>
+        <attr name="progress_reach_height"/>
+        <attr name="progress_text_color"/>
+        <attr name="progress_text_size"/>
+        <attr name="progress_text_offset"/>
+    </declare-styleable>
+    
+    <declare-styleable name="ArcProgressViewStyle">
+        <attr name="apv_background_color" format="color"/>
+        <attr name="apv_progress_color" format="color"/>
+        <attr name="apv_stroke_width" format="dimension"/>
+        <attr name="apv_stroke_color" format="color"/>
+        <attr name="apv_progress_percent" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="StrokeTextView">
+        <attr name="strokeColor" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="gradientOrientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="textStroke" format="boolean" />
+        <attr name="textStrokeWidth2" format="float" />
+        <attr name="textStrokeColor2" format="color" />
+    </declare-styleable>
+    <declare-styleable name="StrokeText">
+        <attr name="textStrokeColor" format="color"/>
+        <attr name="textStrokeWidth" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="stroketext">
+        <attr name="strokeColor2" format="string" />
+    </declare-styleable>
+</resources>
